@@ -25,8 +25,9 @@ def show_field(field):
 
 
 def randomize_field(field):
-    for i in range(1, len(field)):
-        for j in range(1, len(field[i])):
+    n, m = len(field), len(field[0])
+    for i in range(1, n):
+        for j in range(1, m):
             field[i][j] = random.choice([0, 1])
     return field
 
