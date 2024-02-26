@@ -14,10 +14,13 @@ field = create_group_field(N, M)
 dx, dy = 1, 0
 snake = [[N//2, M//2]]
 
+last_time = 0
+speed = 200
 game_over = False
 is_running = True
 while is_running:
-    time_delta = clock.tick(30)
+    time_delta = clock.tick(FPS)
+    last_time += time_delta
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -39,16 +42,24 @@ while is_running:
                 dx = 1
                 dy = 0
 
-    if not game_over:
+    if last_time > speed:
+        last_time = 0
+        speed -= 10
         y, x = snake[-1]
         field_[y][x] = 0
 
         y, x = snake[0]
         y += dy
         x += dx
-        if y == N or x == M or y == 0 or x == 0:
-            dx, dy = 0, 0
-            game_over = True
+
+        if y == 1:
+            y = N
+        if x == 1:
+            x = M
+        if y == N:
+            y = 1
+        if x == M:
+            x = 1
 
         snake.insert(0, (y, x))
         field_[y][x] = 1
