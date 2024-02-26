@@ -7,15 +7,27 @@ class Cell(pg.sprite.Sprite):
         super().__init__()
         self.i = i
         self.j = j
-        self.state = state
+        self.color = state
         self.image = pg.Surface((C_WIDTH-0.1, C_HEIGHT-0.1))
         self.rect  = self.image.get_rect()
         self.rect.topleft = position
 
-    def update(self, field_):
-        self.state = field_[self.i][self.j]
-        color = MURDER_C
-        if self.state == 1:
-            color = ALIVE_C
+    def update(self, field_, colors):
+        state = field_[self.i][self.j]
+        self.color = colors[state]
+        
+        self.image.fill(self.color)
 
-        self.image.fill(color)
+def create_group_field(n, m):
+    field = pg.sprite.Group()
+
+    for i in range(n):
+        for j in range(m):
+            Cell(
+                position=(C_WIDTH * j, C_HEIGHT * i), 
+                state=0,
+                i=i+1,
+                j=j+1
+            ).add(field)
+    
+    return field
